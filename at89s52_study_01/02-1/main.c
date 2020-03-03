@@ -3,8 +3,9 @@
 *File name: main.c
 *Author: Sean Kim
 *Date: 02.28.20
-*Edited:
+*Edited: 03.03.20
 */
+
 #include "main.h"
 #include "reg51.h"
 #include "essen_prog.h"

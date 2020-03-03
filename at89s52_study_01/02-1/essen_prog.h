@@ -3,7 +3,7 @@
 *File name: essen_prog.h
 *Author: Sean Kim
 *Date: 03.01.20
-*Edited:
+*Edited: 03.03.20
 */
 
 
