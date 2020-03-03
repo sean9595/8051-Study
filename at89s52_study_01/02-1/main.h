@@ -9,6 +9,7 @@ exturn "C"{
 
 /*includes*/
 #include "reg51.h"
+#include "essen_prog.h"
 
 #ifdef __cplusplus
 }
