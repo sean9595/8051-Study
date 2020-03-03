@@ -1,0 +1,63 @@
+C51 COMPILER V9.60.0.0   MAIN                                                              02/24/2020 22:38:25 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          //////////////////////////////////////////////////////////////////////////////////////////////////////////
+             -///////////////////
+   2          //Title: Project01-1 LED indicating sys
+   3          //Author: Sean Kim
+   4          //Date: 2.21.2020
+   5          //Edited: 2.24.2020 (managed for 20MHz clock source)
+   6          //////////////////////////////////////////////////////////////////////////////////////////////////////////
+             -///////////////////
+   7          
+   8          #include<reg51.h>
+   9          
+  10          void delay(unsigned int i);
+  11          
+  12          void main()
+  13          {
+  14   1        unsigned char led = 0xfe; //111111110(2)
+  15   1        
+  16   1        while(1)
+  17   1        {
+  18   2         P1 = led; //Set initial dat. '11111110' on 8bit P1 reg.special function reg.
+  19   2         led = (led<<1) | 0x01; //1bit left shifting & set LSB 1. 
+  20   2                                //11111110 -> 11111101 -> 11111011 -> 11110111 -> 11101111 -> 11011111 -> 10111111
+             - -> 01111111
+  21   2         if(led == 0xff) //led == 11111111
+  22   2         {
+  23   3           led = 0xfe;
+  24   3         }
+  25   2          delay(0x12800); //R6 is equal to aprox. 296.
+  26   2        }
+  27   1      }
+  28          
+  29          void delay(unsigned int i) //Delay func.
+  30          {
+  31   1        while(i--);
+  32   1      }
+  33          //DON'T WRITE STATEMENT FOR CALCULATE TIME TO HEX.
+  34          //12MHz oscillator, '1 machine cycle = 1us' 
+  35          //20MHz oscillator, '1 machime cycle = 0.6us'
+  36            
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     40    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
