@@ -8,7 +8,6 @@
 
 #include "essen_prog.h"
 
-void delay(unsigned int ms);
 
 void delay(unsigned int ms)
 {

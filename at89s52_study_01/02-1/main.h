@@ -14,7 +14,7 @@ exturn "C"{
 #endif
 
 /*includes*/
-#include "reg51.h"
+#include "at89x52.h"
 #include "essen_prog.h"
 
 #ifdef __cplusplus

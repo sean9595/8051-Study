@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.0.0   MAIN                                                              02/28/2020 21:19:55 PAGE 1   
+C51 COMPILER V9.60.0.0   MAIN                                                              03/08/2020 15:19:46 PAGE 1   
 
 
 C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
@@ -13,64 +13,69 @@ line level    source
    3          *File name: main.c
    4          *Author: Sean Kim
    5          *Date: 02.28.20
-   6          *Edited:
+   6          *Edited: 03.03.20
    7          */
    8          
-   9          #include "reg51.h"
-  10          #include "main.h"
-  11          unsigned char led;
+   9          #include "main.h"
+  10          #include "at89x52.h"
+  11          #include "essen_prog.h"
   12          
-  13          void delay(unsigned int a);
-  14          void interrupt_init();
+  13          bit flag_interrupt_01 = 0; //'sbit' is used when we name some bit value on SFR. 
+  14          unsigned char led;
   15          
-  16          void main()
-  17          {
-  18   1          interrupt_init();
-  19   1          TCON =0x01;
-  20   1            
-  21   1          EX0 = 1; //External interrupt '0' enable.
-  22   1          EA= 1; //This bit is for athorizing interrupt. ?? ???? ????.
-  23   1          PX0 =1;
-  24   1          led=0xfe;
-  25   1          P1=led;
-  26   1          while(1)
-  27   1          {
-  28   2          }
-  29   1      }
-  30          
-  31          void interrupt_init()
-  32          {
-  33   1          IE = 0x0;
-  34   1      }
-  35          
-  36          void delay(unsigned int a)
-  37          {
-  38   1          while(a--)
-  39   1          {}
-  40   1      }
-  41          
-  42          void EXT0_int() interrupt 0
-  43          {
-  44   1        EA = 0;
-  45   1        led=(led<<1)|0x01;
-  46   1        if(led==0xff) led=0xfe;
-  47   1        P1=led;
-  48   1        delay(200);
-  49   1        EA=1;
-  50   1        return;
-  51   1      }
+  16          void delay(unsigned int ms);
+  17          
+  18          
+  19          void main()
+  20          {
+  21   1          TCON = 0x01; //Timer control register. 
+  22   1                       //0x00000000 => reset value
+  23   1                       //IT0 reg. = 1 -> Set external interrupt 0. 
+  24   1                       //IE0 reg. -> When external interrupt occurs, this flag sets as 1. This makes the system j
+             -umps to the ISR.
+  25   1      
+  26   1          delay(1000); 
+  27   1          
+  28   1          EX0 = 1; //External interrupt '0' enable.
+  29   1          EA= 1; //This bit is for athorizing interrupt. Has to put this code back. 
+  30   1          PX0 = 1; //
+  31   1          led = 0xfe;
+  32   1          P1 = led;
+  33   1      
+  34   1          while(1)
+  35   1          {
+  36   2              if(flag_interrupt_01)
+  37   2              {
+  38   3              EA = 0;
+  39   3              led = (led<<1) | 0x01;
+  40   3      
+  41   3              if(led == 0xff) led = 0xfe;
+  42   3      
+  43   3              P1 = led;
+  44   3              delay(20); //Delay for 20ms. This is for debouncing.
+  45   3              EA = 1;
+  46   3              flag_interrupt_01 = 0;
+  47   3              }
+  48   2          }
+  49   1      }
+  50          
+  51          void EXT0_int() interrupt 0
+  52          {
+  53   1          flag_interrupt_01 = 1; //Don't let the ISR code unnecessarily long. 
+C51 COMPILER V9.60.0.0   MAIN                                                              03/08/2020 15:19:46 PAGE 2   
+
+  54   1      }
+  55          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-C51 COMPILER V9.60.0.0   MAIN                                                              02/28/2020 21:19:55 PAGE 2   
-
-   CODE SIZE        =     87    ----
+   CODE SIZE        =     60    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =      1    ----
    IDATA SIZE       =   ----    ----
-   BIT SIZE         =   ----    ----
+   BIT SIZE         =      1    ----
 END OF MODULE INFORMATION.
 
 

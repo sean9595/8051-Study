@@ -11,15 +11,6 @@
 #ifndef __ESSEN_PROG_H
 #define __ESSEN_PROG_H
 
-#ifdef __cplusplus
-exturn "C"{
-#endif
-
-/*includes*/
-
-#ifdef __cplusplus
-}
-
-#endif
+void delay(unsigned int ms); //Pre-define user function here.
 
 #endif /*__ESSEN_PROG_H*/

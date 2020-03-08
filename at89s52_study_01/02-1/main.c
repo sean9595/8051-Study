@@ -7,11 +7,13 @@
 */
 
 #include "main.h"
-#include "reg51.h"
+#include "at89x52.h"
 #include "essen_prog.h"
 
-sbit flag_interrupt_01 = 0;
+bit flag_interrupt_01 = 0; //'sbit' is used when we name some bit value on SFR. 
+unsigned char led;
 
+void delay(unsigned int ms);
 
 
 void main()
@@ -50,3 +52,4 @@ void EXT0_int() interrupt 0
 {
     flag_interrupt_01 = 1; //Don't let the ISR code unnecessarily long. 
 }
+

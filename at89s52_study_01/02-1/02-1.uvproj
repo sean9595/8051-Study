@@ -391,6 +391,11 @@
               <FileType>5</FileType>
               <FilePath>.\main.h</FilePath>
             </File>
+            <File>
+              <FileName>essen_prog.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\essen_prog.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
