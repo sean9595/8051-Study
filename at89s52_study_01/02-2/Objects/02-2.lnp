@@ -1,0 +1,6 @@
+".\Objects\STARTUP.obj",
+".\Objects\essen_prog.obj",
+".\Objects\main.obj" 
+TO ".\Objects\02-2" 
+PRINT(".\Listings\02-2.m51") RAMSIZE(256) 
+CODE( 0X0000-0X1FFF )

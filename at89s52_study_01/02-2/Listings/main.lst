@@ -1,0 +1,88 @@
+C51 COMPILER V9.60.0.0   MAIN                                                              03/10/2020 01:01:58 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\02-1\main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listi
+                    -ngs\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          /*
+   2          *Project name: Use timer interrupt to control LEDs.
+   3          *File name: main.c
+   4          *Author: Sean Kim
+   5          *Date: 03.08.20
+   6          *Edited: 
+   7          */
+   8          
+   9          #include "main.h"
+  10          #include "at89x52.h"
+  11          
+  12          
+  13          unsigned char LED, count;
+  14          bit T_int_flag = 0;
+  15          
+  16          void main()
+  17          {
+  18   1        /*Basic setting for timer interrupt*/
+  19   1        TMOD = 0x01; //GATE = 0, C/T = 0, Timer/counter mode 1
+  20   1        TF0 = 0; // Timer/counter 0 interrupt flag clear
+  21   1        TL0 = 0x82 ;
+  22   1        TH0 = 0x35 ; //Time const. for 0.02s. // 0x8235*0.6us is approximately equal to 0.02s.
+  23   1        IE = 0x82; // IE -> interrupt enable reg. Timer interrupt enables & entire interrupt enable.
+  24   1        IP = 0x02; // IP -> interrupt priority. Set timer interrupt 0 as the highest priority. 
+  25   1                   // Should have to consider which register(btw IE & IP) comes first. 
+  26   1        
+  27   1        TR0 = 1; // Timer interrupt 0 RUN.
+  28   1        
+  29   1        /*Code for set led*/
+  30   1        LED = 0xfe; // 0b11111110
+  31   1        P1 = LED;
+  32   1        
+  33   1        count = 50; // 0.02*50 = 1sec.
+  34   1        
+  35   1        /*Infinite loop*/
+  36   1        while(1) // Stay for interrupt
+  37   1        {
+  38   2          if(T_int_flag)
+  39   2          {
+  40   3            LED = (LED<<1) | 0x01; // 1 bit shifting
+  41   3            
+  42   3            if (LED == 0xff) LED = 0xfe;
+  43   3            P1 = LED;
+  44   3            
+  45   3            count = 50; // Counter reset.
+  46   3            T_int_flag = 0; // Flag reset.
+  47   3          }
+  48   2        }
+  49   1      
+  50   1      }
+  51          
+  52          void T_int() interrupt 1 // void [user name]() interrupt [vector num.]
+  53          {
+  54   1        count--; // Since the const. count is 50, T_int_flag is set until count decreased to zero. 
+C51 COMPILER V9.60.0.0   MAIN                                                              03/10/2020 01:01:58 PAGE 2   
+
+  55   1                 // This operation delays LED shifting 1sec.
+  56   1        if(!count) T_int_flag = 1;
+  57   1        
+  58   1        TL0 = 0x82 ;
+  59   1        TH0 = 0x35 ; // Reset of these two register is necessary for periodic interrupt since it is mode 1.
+  60   1        EA = 1; // Interrupt enables
+  61   1        return;
+  62   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     69    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
