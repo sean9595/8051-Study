@@ -1,0 +1,83 @@
+C51 COMPILER V9.60.0.0   MAIN                                                              03/11/2020 22:38:32 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          /*
+   2          *Project name: Serial communication 01 (without interrupt)
+   3          *File name: main.h
+   4          *Author: Sean Kim
+   5          *Date: 03.11.20
+   6          *Edited: 03.11.20
+   7          */
+   8          
+   9          #include "main.h"
+  10          #include "at89x52.h"
+  11          #include "essen_prog.h"
+  12          
+  13          #define LF 0x0a; // ASCII CODE LF 
+  14          #define CR 0x0d; // ASCII CODE CR
+  15          
+  16          void main()
+  17          {
+  18   1        unsigned int i;
+  19   1        
+  20   1        /*Baudrate generation*/
+  21   1        TMOD = 0x20;//T/C mode 2, timer 1
+  22   1        TH1 = 0xfb; // (256-TH1)={(20*10^6)*(2^SMOD value)}/(32*12*9600) for baudrate 9600bps
+  23   1        
+  24   1        /*Serial communication setting*/
+  25   1        PCON = 0x00; //SMOD=0
+  26   1        TR1 = 1; //Timer 1 running.
+  27   1        SCON = 0x40; // 0b0100\0000 -> Serial mode 1, SM2=0, REN=0(only transmitting)
+  28   1      
+  29   1        /*Infinite loop*/
+  30   1        while(1)
+  31   1        {
+  32   2          for(i=0;i<=25;i++) // a~z
+  33   2          {
+  34   3            SBUF = 'a' + i;
+  35   3            delay(50); //Delay for 0.05s
+  36   3          }
+  37   2          
+  38   2          SBUF = LF; 
+  39   2          delay(50);
+  40   2          
+  41   2          SBUF = CR;
+  42   2          delay(50);
+  43   2          
+  44   2          for(i=0;i<=25;i++) // A~Z
+  45   2          {
+  46   3            SBUF = 'A' + i;
+  47   3            delay(50);
+  48   3          }
+  49   2          SBUF = LF;
+  50   2          delay(50);
+  51   2          
+  52   2          SBUF = CR;
+  53   2          delay(50);
+  54   2          
+C51 COMPILER V9.60.0.0   MAIN                                                              03/11/2020 22:38:32 PAGE 2   
+
+  55   2          delay(500);
+  56   2        }
+  57   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    133    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
