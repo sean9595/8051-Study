@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.0.0   MAIN                                                              03/11/2020 22:38:32 PAGE 1   
+C51 COMPILER V9.60.0.0   MAIN                                                              03/15/2020 13:29:41 PAGE 1   
 
 
 C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
@@ -13,7 +13,7 @@ line level    source
    3          *File name: main.h
    4          *Author: Sean Kim
    5          *Date: 03.11.20
-   6          *Edited: 03.11.20
+   6          *Edited: 03.15.20
    7          */
    8          
    9          #include "main.h"
@@ -29,44 +29,46 @@ line level    source
   19   1        
   20   1        /*Baudrate generation*/
   21   1        TMOD = 0x20;//T/C mode 2, timer 1
-  22   1        TH1 = 0xfb; // (256-TH1)={(20*10^6)*(2^SMOD value)}/(32*12*9600) for baudrate 9600bps
-  23   1        
-  24   1        /*Serial communication setting*/
-  25   1        PCON = 0x00; //SMOD=0
-  26   1        TR1 = 1; //Timer 1 running.
-  27   1        SCON = 0x40; // 0b0100\0000 -> Serial mode 1, SM2=0, REN=0(only transmitting)
-  28   1      
-  29   1        /*Infinite loop*/
-  30   1        while(1)
-  31   1        {
-  32   2          for(i=0;i<=25;i++) // a~z
-  33   2          {
-  34   3            SBUF = 'a' + i;
-  35   3            delay(50); //Delay for 0.05s
-  36   3          }
-  37   2          
-  38   2          SBUF = LF; 
-  39   2          delay(50);
-  40   2          
-  41   2          SBUF = CR;
-  42   2          delay(50);
-  43   2          
-  44   2          for(i=0;i<=25;i++) // A~Z
-  45   2          {
-  46   3            SBUF = 'A' + i;
-  47   3            delay(50);
-  48   3          }
-  49   2          SBUF = LF;
-  50   2          delay(50);
-  51   2          
-  52   2          SBUF = CR;
-  53   2          delay(50);
-  54   2          
-C51 COMPILER V9.60.0.0   MAIN                                                              03/11/2020 22:38:32 PAGE 2   
+  22   1        //TH1 = 0xfb; // TH1={(20*10^6)*(2^SMOD value)}/(32*12*9600) for baudrate 9600bps //This is not generate 
+             -exact baudrate. For serial com., the TH1 has to be exact value. 
+  23   1        TH1 = 0x7d; // Switch oscillator frequency 20MHz to 12MHz. Baudrate = 250bps.
+  24   1        
+  25   1        /*Serial communication setting*/
+  26   1        PCON = 0x00; //SMOD=0
+  27   1        TR1 = 1; //Timer 1 running.
+  28   1        SCON = 0x40; // 0b0100\0000 -> Serial mode 1, SM2=0, REN=0(only transmitting)
+  29   1      
+  30   1        /*Infinite loop*/
+  31   1        while(1)
+  32   1        {
+  33   2          for(i=0;i<=25;i++) // a~z
+  34   2          {
+  35   3            SBUF = 'a' + i;
+  36   3            delay(50); //Delay for 0.05s
+  37   3          }
+  38   2          
+  39   2          SBUF = LF; 
+  40   2          delay(50);
+  41   2          
+  42   2          SBUF = CR;
+  43   2          delay(50);
+  44   2          
+  45   2          for(i=0;i<=25;i++) // A~Z
+  46   2          {
+  47   3            SBUF = 'A' + i;
+  48   3            delay(50);
+  49   3          }
+  50   2          SBUF = LF;
+  51   2          delay(50);
+  52   2          
+  53   2          SBUF = CR;
+C51 COMPILER V9.60.0.0   MAIN                                                              03/15/2020 13:29:41 PAGE 2   
 
-  55   2          delay(500);
-  56   2        }
-  57   1      }
+  54   2          delay(50);
+  55   2          
+  56   2          delay(500);
+  57   2        }
+  58   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
