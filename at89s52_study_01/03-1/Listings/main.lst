@@ -1,0 +1,134 @@
+C51 COMPILER V9.60.0.0   MAIN                                                              03/19/2020 00:02:05 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          /*
+   2          *Project name: 7-segment 4-digit
+   3          *File name: main.c
+   4          *Author: Sean Kim
+   5          *Date: 03.18.20
+   6          *Edited: 
+   7          */
+   8          
+   9          #include "at89x52.h"
+  10          #include "essen_prog.h"
+  11          
+  12          unsigned char thsnd = 0, hndrd = 0, ten = 0, one = 0;
+  13          unsigned char count;
+  14          bit T_int_flag = 0;
+  15          unsigned char i=0, j=0, k=0, l=0;
+  16          
+  17          void display()
+  18          {
+  19   1        P0 = (thsnd) | 0x80;
+  20   1        delay(1);
+  21   1        P0 = (hndrd) | 0x40;
+  22   1        delay(1);
+  23   1        P0 = (ten) | 0x20;
+  24   1        delay(1);
+  25   1        P0 = (one) | 0x10;
+  26   1        delay(1);
+  27   1        return;
+  28   1      }
+  29          
+  30          void main()
+  31          {
+  32   1        /*Basic setting for timer interrupt*/
+  33   1        TMOD = 0x01; //GATE = 0, C/T = 0, Timer/counter mode 1
+  34   1        TF0 = 0; // Timer/counter 0 interrupt flag clear
+  35   1        TL0 = 0xc3 ;
+  36   1        TH0 = 0x50 ; // Crystal oscillator = 12MHz. -> 1us/MC. 
+  37   1                     // TI occurs every 0.05 sec 
+  38   1        IE = 0x82; // IE -> interrupt enable reg. Timer interrupt enables & entire interrupt enable.
+  39   1        IP = 0x02; // IP -> interrupt priority. Set timer interrupt 0 as the highest priority. 
+  40   1                   // Should have to consider which register(btw IE & IP) comes first. 
+  41   1        
+  42   1        TR0 = 1; // Timer interrupt 0 RUN.
+  43   1        
+  44   1        
+  45   1        count = 20; // 0.05*20 = 1sec.
+  46   1        
+  47   1        
+  48   1        /*Infinite loop*/
+  49   1        while(1) // Stay for interrupt
+  50   1        {
+  51   2          if(T_int_flag)
+  52   2          {
+  53   3              i++;
+  54   3              j++;
+C51 COMPILER V9.60.0.0   MAIN                                                              03/19/2020 00:02:05 PAGE 2   
+
+  55   3              k++;
+  56   3              l++;
+  57   3            if(i==1)
+  58   3            {
+  59   4              one++;
+  60   4              i=0;
+  61   4            }
+  62   3            
+  63   3            if(j==10)
+  64   3            {
+  65   4              ten++;
+  66   4              j=0;
+  67   4            }
+  68   3            if(k==100)
+  69   3            {
+  70   4              hndrd++;
+  71   4              k=0;
+  72   4            }
+  73   3            if(l==1000)
+  74   3            {
+  75   4              thsnd++;
+  76   4              l=0;
+  77   4            }
+  78   3            if((thsnd>9)&&(hndrd>9)&&(ten>9)&&(one>9))
+  79   3            {
+  80   4              thsnd = 0;
+  81   4              hndrd = 0;
+  82   4              ten = 0;
+  83   4              one = 0;
+  84   4            }
+  85   3            
+  86   3            display();
+  87   3            
+  88   3            count = 50; // Counter reset.
+  89   3            T_int_flag = 0; // Flag reset.
+  90   3          }
+  91   2        }
+  92   1      
+  93   1      }
+  94          
+  95          void T_int() interrupt 1 // void [user name]() interrupt [vector num.]
+  96          {
+  97   1        count--; // Since the const. count is 20, T_int_flag is set until count decreased to zero. 
+  98   1                 // This operation delays LED shifting 1sec.
+  99   1        if(!count) T_int_flag = 1;
+ 100   1        
+ 101   1        TL0 = 0xc3 ;
+ 102   1        TH0 = 0x50 ; // Reset of these two register is necessary for periodic interrupt since it is mode 1.
+ 103   1        EA = 1; // Interrupt enables
+ 104   1        return;
+ 105   1      }
+ 106          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    207    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      9    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+C51 COMPILER V9.60.0.0   MAIN                                                              03/19/2020 00:02:05 PAGE 3   
+
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

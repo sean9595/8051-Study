@@ -1,8 +1,8 @@
 /*
-*Project name: Serial communication 02
+*Project name: 7-segment 4-digit
 *File name: main.h
 *Author: Sean Kim
-*Date: 03.12.20
+*Date: 03.15.20
 *Edited: 
 */
 
@@ -15,9 +15,12 @@ exturn "C"{
 
 /*includes*/
 #include "at89x52.h"
+#include "essen_prog.h"
 
 #ifdef __cplusplus
 }
+
+void display();
 
 #endif
 

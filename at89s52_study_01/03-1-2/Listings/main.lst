@@ -1,0 +1,179 @@
+C51 COMPILER V9.60.0.0   MAIN                                                              03/19/2020 14:37:01 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          /*
+   2          *Project name: 4_digit 7-segment timer (with two timer interrupts)                                        
+             -                                                                                                                        
+             -                                                                                                  
+   3          *File name: main.c
+   4          *Author: Sean Kim
+   5          *Date: 03.19.20
+   6          *Edited: 
+   7          */
+   8          
+   9          #include "main.h"
+  10          #include "at89x52.h"
+  11          #include "essen_prog.h"
+  12          
+  13          bit T_int_flag_01 = 0;
+  14          bit T_int_flag_02 = 0;
+  15          
+  16          //unsigned char 4_dig=0, 3_dig=0, 2_dig=0, 1_dig=0;
+  17          unsigned char a=0, b=0, c=0, d=0;
+  18          unsigned char i=0, j=0, k=0, l=0;
+  19          unsigned char num[] = {0x40, 0x79, 0x34, 0x30, 0x1c, 0x12, 0x02, 0x78, 0x00, 0x10}; 
+  20                                    //7-segment? common cathod
+  21                                    //0 = "0b01000000", 1 = "0b10000110", 2 = "0b11001011", 3 = "0b11001111", 4 = "0
+             -b11100011", 5 = "0b11101101"
+  22                                    //6 = "0b11111101", 7 = "0b10000111", 8 = "0b11111111", 9 = "0b11101111"
+  23          unsigned char count;
+  24            
+  25          void display()
+  26            {
+  27   1          P0 = 0x0e;
+  28   1          P1 = num[a];
+  29   1          delay(1);
+  30   1          
+  31   1          P0 = 0x0d;
+  32   1          P1 = num[b];
+  33   1          delay(1);
+  34   1          
+  35   1          P0 = 0x0b;
+  36   1          P1 = num[c];
+  37   1          delay(1);
+  38   1          
+  39   1          P0 = 0x07;
+  40   1          P1 = num[d];
+  41   1          delay(1);
+  42   1          
+  43   1          return;
+  44   1        }   
+  45            
+  46          void main()
+  47          {
+  48   1        
+  49   1        TMOD = 0x11; //GATE = 0, C/T = 0, Timer/counter mode 1, Use timer/counter 0 & 1.
+  50   1        TF0 = 0; // Timer/counter 0 interrupt flag clear
+  51   1        TF1 = 0; // Timer/counter 1 interrupt flag clear
+C51 COMPILER V9.60.0.0   MAIN                                                              03/19/2020 14:37:01 PAGE 2   
+
+  52   1        
+  53   1        TL0 = 0xc3 ;
+  54   1        TH0 = 0x50 ; 
+  55   1        TL1 = 0xc3 ;
+  56   1        TH1 = 0x50 ; // Crystal oscillator = 12MHz. -> 1us/MC. 
+  57   1                     // TI occurs every 0.05 sec 
+  58   1        IE = 0x8a; // 0b1000 1010 IE -> interrupt enable reg. Timer interrupt enables & entire interrupt enable.
+  59   1         
+  60   1        //IP = 0x02; // IP -> interrupt priority. Set timer interrupt 0 as the highest priority. 
+  61   1                     // Should have to consider which register(btw IE & IP) comes first. 
+  62   1                     //This code is unnecessary, since the priority of TI0 is higher than the priority of TI1(by 
+             -internal polling). 
+  63   1        
+  64   1        TR0 = 1; // Timer interrupt 0 RUN.
+  65   1        TR1 = 1; // Timer interrupt 1 RUN.
+  66   1        
+  67   1        count = 20; // 0.05*20 = 1sec. 
+  68   1        
+  69   1        while(1)
+  70   1        {
+  71   2          if(T_int_flag_01)
+  72   2          {
+  73   3            i++;
+  74   3            j++;
+  75   3            k++;
+  76   3            l++;
+  77   3            
+  78   3            if(i==1000)
+  79   3            {
+  80   4              a++;
+  81   4              i=0;
+  82   4            }
+  83   3            
+  84   3            if(j==100)
+  85   3            {
+  86   4              b++;
+  87   4              j=0;
+  88   4            }
+  89   3            
+  90   3            if(k==10)
+  91   3            {
+  92   4              c++;
+  93   4              k=0;
+  94   4            }
+  95   3            
+  96   3            if(l==1)
+  97   3            {
+  98   4              d++;
+  99   4              l=0;
+ 100   4            }
+ 101   3            
+ 102   3            if((a>9) && (b>9) && (c>9) && (d>9))
+ 103   3            {
+ 104   4              a=0;
+ 105   4              b=0;
+ 106   4              c=0; 
+ 107   4              d=0;
+ 108   4            }
+ 109   3          
+ 110   3            
+ 111   3            count = 20;
+ 112   3            T_int_flag_01 = 0;
+C51 COMPILER V9.60.0.0   MAIN                                                              03/19/2020 14:37:01 PAGE 3   
+
+ 113   3          }
+ 114   2          
+ 115   2          else if(T_int_flag_02)
+ 116   2          {
+ 117   3            display();
+ 118   3          
+ 119   3          T_int_flag_02 = 0;
+ 120   3          }
+ 121   2        }
+ 122   1      }
+ 123          
+ 124          
+ 125          void T_int_01() interrupt 1 // void [user name]() interrupt [vector num.]
+ 126          {
+ 127   1        count--; // Since the const. count is 50, T_int_flag is set until count decreased to zero. 
+ 128   1                 
+ 129   1        if(!count) T_int_flag_01 = 1;
+ 130   1        
+ 131   1        TL0 = 0xc3 ;
+ 132   1        TH0 = 0x50 ; // Reset of these two register is necessary for periodic interrupt since it is mode 1.
+ 133   1        EA = 1; // Interrupt enables
+ 134   1        return;
+ 135   1      }
+ 136          
+ 137          void T_int_02() interrupt 3 // void [user name]() interrupt [vector num.]
+ 138          {
+ 139   1        T_int_flag_02 = 1;
+ 140   1        
+ 141   1        TL1 = 0xc3 ;
+ 142   1        TH1 = 0x50 ; // Reset of these two register is necessary for periodic interrupt since it is mode 1.
+ 143   1        EA = 1; // Interrupt enables
+ 144   1        return;
+ 145   1      }
+ 146          
+ 147          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    252    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     19    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
