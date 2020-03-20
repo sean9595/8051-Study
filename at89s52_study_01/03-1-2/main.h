@@ -15,7 +15,7 @@ exturn "C"{
 
 /*includes*/
 #include "at89x52.h"
-#include "essen_prog.h"
+
 	
 void display();
 	
