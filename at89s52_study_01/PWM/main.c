@@ -7,7 +7,6 @@
 */
 
 #include <main.h>
-#include <math.h>
 #include <at89x52.h>
 
 /*Pin definition*/
