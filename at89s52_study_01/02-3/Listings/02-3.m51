@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    03/15/2020  20:26:05  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    03/22/2020  01:14:17  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
@@ -59,7 +59,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\02-3 (?C_STARTUP)
   I:000AH         SEGMENT       ?STACK
   C:0000H         PUBLIC        ?C_STARTUP
   D:00E0H         SYMBOL        ACC
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/15/2020  20:26:05  PAGE 2
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/22/2020  01:14:17  PAGE 2
 
 
   D:00F0H         SYMBOL        B
@@ -107,35 +107,35 @@ SYMBOL TABLE OF MODULE:  .\Objects\02-3 (?C_STARTUP)
   C:0800H         LINE#         16
   C:0800H         LINE#         17
   C:0800H         LINE#         21
-  C:0803H         LINE#         24
-  C:0806H         LINE#         27
-  C:0809H         LINE#         28
-  C:080BH         LINE#         29
+  C:0803H         LINE#         22
+  C:0806H         LINE#         26
+  C:0809H         LINE#         27
+  C:080BH         LINE#         28
+  C:080EH         LINE#         31
   C:080EH         LINE#         32
   C:080EH         LINE#         33
-  C:080EH         LINE#         34
+  C:0813H         LINE#         34
   C:0813H         LINE#         35
-  C:0813H         LINE#         36
-  C:0819H         LINE#         37
-  C:0820H         LINE#         38
-  C:0831H         LINE#         40
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/15/2020  20:26:05  PAGE 3
+  C:0819H         LINE#         36
+  C:0820H         LINE#         37
+  C:0831H         LINE#         39
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/22/2020  01:14:17  PAGE 3
 
 
-  C:0834H         LINE#         41
-  C:083BH         LINE#         43
-  C:083EH         LINE#         44
-  C:0845H         LINE#         46
+  C:0834H         LINE#         40
+  C:083BH         LINE#         42
+  C:083EH         LINE#         43
+  C:0845H         LINE#         45
+  C:084AH         LINE#         46
   C:084AH         LINE#         47
-  C:084AH         LINE#         48
-  C:0850H         LINE#         49
-  C:0857H         LINE#         50
-  C:0868H         LINE#         51
-  C:086BH         LINE#         52
-  C:0872H         LINE#         54
-  C:0875H         LINE#         55
-  C:087CH         LINE#         57
-  C:0883H         LINE#         58
+  C:0850H         LINE#         48
+  C:0857H         LINE#         49
+  C:0868H         LINE#         50
+  C:086BH         LINE#         51
+  C:0872H         LINE#         53
+  C:0875H         LINE#         54
+  C:087CH         LINE#         56
+  C:0883H         LINE#         57
   -------         ENDPROC       MAIN
   -------         ENDMOD        MAIN
 

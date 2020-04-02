@@ -19,9 +19,8 @@ void main()
 	
 	/*Baudrate generation*/
 	TMOD = 0x20;//T/C mode 2, timer 1
-	//TH1 = 0xfb; // (256-TH1)={(20*10^6)*(2^SMOD value)}/(32*12*9600) for baudrate 9600bps //This is not generate exact baudrate. For serial com., the TH1 has to be exact value. 
-	//TH1 = 0x7d; // Switch oscillator frequency 20MHz to 12MHz. Baudrate = 250bps.
-	TH1 = 0xff;                                                                                                              
+	TH1 = 0xfa;  // (256-TH1)={(osc*10^6)*(2^SMOD value)}/(32*12*9600) for baudrate 9600bps
+               //11.0592MHz	
 	
 	/*Serial communication setting*/
 	PCON = 0x80; //SMOD=0
