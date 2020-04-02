@@ -39,18 +39,20 @@ void main()
 	           // Should have to consider which register(btw IE & IP) comes first. 
 	
 	TR0 = 1; // Timer interrupt 0 RUN.
-	
-	while(PWM_int_flag_High)
+	while(1)
+	{
+	if(PWM_int_flag_High)
 	{
 		PWM_out = 1;
 		PWM_int_flag_High = 0;
 	}
 	
-	while(PWM_int_flag_Low)
+	else if(PWM_int_flag_Low)
 	{
 		PWM_out = 0;
 		PWM_int_flag_Low = 0;
 	}
+  }
 }
 
 void PWM_int() interrupt 1 // void [user name]() interrupt [vector num.]

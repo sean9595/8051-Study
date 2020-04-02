@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.0.0   MAIN                                                              04/02/2020 17:43:00 PAGE 1   
+C51 COMPILER V9.60.0.0   MAIN                                                              04/02/2020 17:48:47 PAGE 1   
 
 
 C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
@@ -49,47 +49,49 @@ line level    source
   39   1                   // Should have to consider which register(btw IE & IP) comes first. 
   40   1        
   41   1        TR0 = 1; // Timer interrupt 0 RUN.
-  42   1        
-  43   1        while(PWM_int_flag_High)
-  44   1        {
-  45   2          PWM_out = 1;
-  46   2          PWM_int_flag_High = 0;
-  47   2        }
-  48   1        
-  49   1        while(PWM_int_flag_Low)
-  50   1        {
-  51   2          PWM_out = 0;
-  52   2          PWM_int_flag_Low = 0;
-  53   2        }
-  54   1      }
-C51 COMPILER V9.60.0.0   MAIN                                                              04/02/2020 17:43:00 PAGE 2   
+  42   1        while(1)
+  43   1        {
+  44   2        if(PWM_int_flag_High)
+  45   2        {
+  46   3          PWM_out = 1;
+  47   3          PWM_int_flag_High = 0;
+  48   3        }
+  49   2        
+  50   2        else if(PWM_int_flag_Low)
+  51   2        {
+  52   3          PWM_out = 0;
+  53   3          PWM_int_flag_Low = 0;
+  54   3        }
+C51 COMPILER V9.60.0.0   MAIN                                                              04/02/2020 17:48:47 PAGE 2   
 
-  55          
-  56          void PWM_int() interrupt 1 // void [user name]() interrupt [vector num.]
-  57          {
-  58   1        if(PWM_High_flag == 0)
-  59   1        {
-  60   2          PWM_int_flag_High = 1;
-  61   2          PWM_High_flag = 1;
-  62   2          TL0 = ((CCR_01>>8) & 0xff);
-  63   2          TH0 = (CCR_01 & 0xff);
-  64   2        }
-  65   1        
-  66   1        else
-  67   1        {
-  68   2          PWM_int_flag_Low = 1;
-  69   2          PWM_High_flag = 0;
-  70   2          TL0 = ((CCR_02>>8) & 0xff);
-  71   2          TH0 = (CCR_02 & 0xff);
-  72   2        }
-  73   1          
-  74   1        EA = 1; // Interrupt enables
-  75   1        return;
-  76   1      }
+  55   2        }
+  56   1      }
+  57          
+  58          void PWM_int() interrupt 1 // void [user name]() interrupt [vector num.]
+  59          {
+  60   1        if(PWM_High_flag == 0)
+  61   1        {
+  62   2          PWM_int_flag_High = 1;
+  63   2          PWM_High_flag = 1;
+  64   2          TL0 = ((CCR_01>>8) & 0xff);
+  65   2          TH0 = (CCR_01 & 0xff);
+  66   2        }
+  67   1        
+  68   1        else
+  69   1        {
+  70   2          PWM_int_flag_Low = 1;
+  71   2          PWM_High_flag = 0;
+  72   2          TL0 = ((CCR_02>>8) & 0xff);
+  73   2          TH0 = (CCR_02 & 0xff);
+  74   2        }
+  75   1          
+  76   1        EA = 1; // Interrupt enables
+  77   1        return;
+  78   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    133    ----
+   CODE SIZE        =    132    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
